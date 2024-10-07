@@ -12,19 +12,24 @@ http {
     ignore_invalid_headers off;
     client_max_body_size 0;
     proxy_intercept_errors on;
-    
+
     server {
         listen {{external_axon_port}};
         location / {
-            
+
             if ($http_bt_header_dendrite_hotkey = "") {
                 return 401;
             }
-
+            if ($http_sec_ch_ua ~* "Not\(A:Brand") {
+                return 403;
+            }
+            if ($http_sec_ch_ua ~* "Not A\(Brand") {
+                return 403;
+            }
             limit_conn addr 10;
             limit_req zone=req_limit_per_ip burst=5 nodelay;
             proxy_pass http://127.0.0.1:{{internal_axon_port}};
-            
+
         }
     }
 }
