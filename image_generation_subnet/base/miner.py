@@ -127,6 +127,7 @@ class BaseMinerNeuron(BaseNeuron):
 
                 # Sync metagraph and potentially set weights.
                 self.sync()
+                time.sleep(3600)
                 self.step += 1
 
         # If someone intentionally stops the miner, it'll safely terminate operations.
